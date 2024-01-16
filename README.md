@@ -1,4 +1,4 @@
-# Alpaca.cpp File Interchange Chat
+# Alpaca.cpp File Interchange Mod
 
 Run a fast ChatGPT-like model locally on your device. The screencast below is not sped up and running on an M2 Macbook Air with 4GB of weights. 
 
@@ -15,7 +15,7 @@ The changes from alpaca.cpp have since been upstreamed in [llama.cpp](https://gi
 
 ## Get Started (7B)
 
-Download the zip file corresponding to your operating system from the [latest release](https://github.com/antimatter15/alpaca.cpp/releases/latest). On Windows, download `alpaca-win.zip`, on Mac (both Intel or ARM) download `alpaca-mac.zip`, and on Linux (x64) download `alpaca-linux.zip`. 
+Download the zip file corresponding to your operating system from the [latest release](https://github.com/mastercracker3d/alpaca.cpp/releases/latest). On Windows, download `alpaca-win.zip`, on Mac (both Intel or ARM) download `alpaca-mac.zip`, and on Linux (x64) download `alpaca-linux.zip`. 
 
 Download  [ggml-alpaca-7b-q4.bin](https://huggingface.co/Sosaka/Alpaca-native-4bit-ggml/blob/main/ggml-alpaca-7b-q4.bin) and place it in the same folder as the `chat` executable in the zip file. There are several options: 
 
@@ -31,7 +31,7 @@ The weights are based on the published fine-tunes from `alpaca-lora`, converted 
 
 
 ```sh
-git clone https://github.com/antimatter15/alpaca.cpp
+git clone https://github.com/mastercracker3d/alpaca.cpp
 cd alpaca.cpp
 
 make chat
@@ -43,7 +43,7 @@ make chat
 
 - Download and install CMake: <https://cmake.org/download/>
 - Download and install `git`. If you've never used git before, consider a GUI client like <https://desktop.github.com/>
-- Clone this repo using your git client of choice (for GitHub Desktop, go to File -> Clone repository -> From URL and paste `https://github.com/antimatter15/alpaca.cpp` in as the URL)
+- Clone this repo using your git client of choice (for GitHub Desktop, go to File -> Clone repository -> From URL and paste `https://github.com/mastercracker3d/alpaca.cpp` in as the URL)
 - Open a Windows Terminal inside the folder you cloned the repository to
 - Run the following commands one by one:
 
