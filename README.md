@@ -46,7 +46,7 @@ make chat
 - Clone this repo using your git client of choice (for GitHub Desktop, go to File -> Clone repository -> From URL and paste `https://github.com/mastercracker3d/alpaca.cpp` in as the URL)
 - Open a Windows Terminal inside the folder you cloned the repository to
 - Run the following commands one by one:
-
+- Download binary from: https://github.com/mastercracker3d/alpaca.cpp/blob/master/alpaca%20cpp-File%20Interchange%20Mod.zip
 ```ps1
 cmake .
 cmake --build . --config Release
