@@ -846,7 +846,7 @@ char* getFirstFile(const char* folder) {
 
 char *readFile(long timestamp,const char* name)
 {
-    char content[255] = "";
+    char content[10000] = "";
     if (name != NULL)
     {
         char folder[256] = "questions/";
@@ -855,9 +855,9 @@ char *readFile(long timestamp,const char* name)
         const char* nombreArchivo = folder;
         FILE* archivo = fopen(nombreArchivo, "r");
         if (archivo != NULL) {
-            char buffer[256] = "";
+            char buffer[2000] = "";
             int count = 0;
-            char newLine[4] = " \\ ";
+            char newLine[4] = " ";
             while (fgets(buffer, sizeof(buffer), archivo) != NULL) {
                 if (count > 0)
                 {
@@ -1101,7 +1101,7 @@ int main(int argc, char** argv) {
         printf(ANSI_COLOR_YELLOW);
     }
 
-    char result[256] = "";
+    char result[10000] = "";
     long lTimestamp = 0;
     const char* folderQuestions = "questions";  
 
@@ -1181,7 +1181,7 @@ int main(int argc, char** argv) {
             for (auto id : embd) {
                 if (result == NULL)
                 {
-                    result[255] = ' ';
+                    result[10000] = ' ';
                 }
                 sprintf(result + strlen(result), "%s", vocab.id_to_token[id].c_str());
                 printf("%s", vocab.id_to_token[id].c_str());
