@@ -8,7 +8,7 @@ Key Features:
 
 📁 Dynamic File System: With its innovative text file exchange, Razor AI allows you to submit questions through the "questions" folder and receive processed answers in the "responses" folder. The simplicity of communication has never been more effective!
 
-🔄 Swift Processing: Get quick and accurate responses. Razor AI processes your questions in real-time and saves responses in the "questions_processed" folder.
+🔄 Swift Processing: Get quick and accurate responses. Razor AI processes your questions in real-time and move it to "questions_processed" folder.
 
 🌐 Limitless Conversations: From solving queries to casual chats, Razor AI is designed to adapt to any type of conversation.
 
@@ -20,7 +20,7 @@ How It Works:
 
 💾 Save Your Answers: Processed responses are stored in the "responses" folder. Access them easily whenever you need.
 
-Razor AI - More Than a Chat, a Unique Conversation Experience.
+Razor AI - More Than a Chat, it is for integration with applications in simple way.
 
 Discover the power of artificial intelligence applied to everyday conversation. Join us at Razor AI and experience the revolution in the way we communicate.
 
