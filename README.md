@@ -1,4 +1,4 @@
-# Welcome to Razor AI - Your Intelligent Conversation Companion!
+# Welcome to Razor AI - Your Intelligent Conversation Companion by Files Interchange!
 
 Discover the future of conversational interaction with Razor AI, a platform based on Alpaca.cpp that redefines the way we communicate. Have you ever wished for immediate answers to your questions or simply to engage in a seamless conversation? Razor AI is here to make it possible.
 
