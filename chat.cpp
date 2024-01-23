@@ -31,7 +31,7 @@
 #define ANSI_BOLD          "\x1b[1m"
 
 #define MAX_LONGITUD_LINEA 1024
-
+char location[255];
 // determine number of model parts based on the dimension
 static const std::map<int, int> LLAMA_N_PARTS = {
     { 4096, 1 },
@@ -93,6 +93,7 @@ struct llama_model {
 // load the model's weights from a file
 bool llama_model_load(const std::string& fname, llama_model& model, gpt_vocab& vocab, int n_ctx) {
     fprintf(stderr, "%s: loading model from '%s' - please wait ...\n", __func__, fname.c_str());
+    sprintf(location + strlen(location), "%s", fname.c_str());
 
     std::vector<char> f_buf(1024 * 1024);
 
@@ -816,6 +817,9 @@ void createFolderIfNotExists(const char* carpeta) {
     }
 }
 char* getFirstFile(const char* folder) {
+    //printf("\getFirstFile Folder: %s\n", folder);
+
+    
     createFolderIfNotExists(folder);
     char* primerArchivo = NULL;
 
@@ -844,12 +848,30 @@ char* getFirstFile(const char* folder) {
 }
 
 
-char *readFile(long timestamp,const char* name)
+char *readFile(long timestamp, char* baseFolder,const char* name)
 {
+    // printf("\nreadFile baseFolder: %s\n", baseFolder);
+
+    //printf("\nreadFile File Name: %s\n", name);
+
     char content[10000] = "";
     if (name != NULL)
     {
-        char folder[256] = "questions/";
+        char folder[256]="";
+        if (strlen(baseFolder) > 3)
+        {
+            sprintf(folder + strlen(folder), "%s", baseFolder);
+            // printf("\nreadFile Folder: %s\n", folder);
+            sprintf(folder + strlen(folder), "%s", "/questions/");
+
+            // printf("\nreadFile Folder: %s\n", folder);
+        }
+        else
+        {
+            sprintf(folder + strlen(folder), "%s", "questions/");
+         //   printf("\nreadFile Folder: %s\n", folder);
+
+        }
         createFolderIfNotExists(folder);
         sprintf(folder + strlen(folder), "%s", name);
         const char* nombreArchivo = folder;
@@ -884,7 +906,19 @@ char *readFile(long timestamp,const char* name)
             const char* textoABuscar = name;
             //printf("\nleerArchivo texto A Buscar: %s\n", textoABuscar);
 
-            char processedFolder[255] = "questions_processed";
+            char processedFolder[255];
+            if (strlen(baseFolder) > 3)
+            {
+                sprintf(processedFolder + strlen(processedFolder), "%s", baseFolder);
+
+                strcat(processedFolder, "/questions_processed/");
+            }
+            else
+            {
+                strcat(processedFolder, "questions_processed/");
+            }
+           // sprintf(processedFolder + strlen(processedFolder), "%s", baseFolder);
+           // printf("\nreadFile processedFolder: %s\n", processedFolder);
             createFolderIfNotExists(processedFolder);
 
             char* posicion = strstr(folder, textoABuscar);
@@ -908,33 +942,49 @@ char *readFile(long timestamp,const char* name)
             rename(nombreArchivo, processedFolder);
             //printf("\nArchivo procesado y renombrado como %s\n", processedFolder);
             folder[0] = '\0';
+            name = "";
+            processedFolder[0] = '\0';
         }
     }
     return content;
 }
-int fileResponse(long lTimestamp,char name[255], char* response)
+int fileResponse(long lTimestamp, char* baseFolder,char name[255], char* response)
 {
+    //printf("\nfileResponse baseFolder: %s\n", baseFolder);
+     //   printf("\nfileResponse File Name: %s\n", name);
+
     int status = 0;
     //printf("\nInicia respuestaArchivo: %s\n", name);
     char fileName[255] = "";
         char completefileName[255] = "-(";
     sprintf(completefileName + strlen(completefileName), "%s", name);
-    //printf("\nrespuestaArchivo completefileName name: %s", completefileName);
+   // printf("\nrespuestaArchivo completefileName name: %s", completefileName);
 
     sprintf(completefileName + strlen(completefileName), "%s", ")-response.txt");
-    //printf("\nrespuestaArchivo completefileName response.txt: %s", completefileName);
+   // printf("\nrespuestaArchivo completefileName response.txt: %s", completefileName);
 
     sprintf(fileName + strlen(fileName), "%d", lTimestamp);
     //printf("\nrespuestaArchivo Timestamp: %s", fileName);
 
 
     sprintf(fileName + strlen(fileName), "%s", completefileName);
-    //printf("\nrespuestaArchivo Con parentesis %s", fileName);
-    char finalName[256] = "responses/";
-    createFolderIfNotExists(finalName);
-
-    sprintf(finalName + strlen(finalName), "%s", fileName);
-    const char* nombreArchivo = finalName;
+   // printf("\nrespuestaArchivo Con parentesis: %s", fileName);
+    char folderResult[255] = "";
+    if (strlen(baseFolder) > 3)
+    {
+        sprintf(folderResult + strlen(folderResult), "%s", baseFolder);
+       // printf("\nrespuestaArchivo folderResult 1: %s", folderResult);
+        sprintf(folderResult + strlen(folderResult), "%s", "/responses");
+    }
+    else
+    {
+        sprintf(folderResult + strlen(folderResult), "%s", "responses/");
+    }
+    createFolderIfNotExists(folderResult);
+    //printf("\nrespuestaArchivo folderResult 2: %s", folderResult);
+    sprintf(folderResult + strlen(folderResult), "%s", "/");
+    sprintf(folderResult + strlen(folderResult), "%s", fileName);
+    const char* nombreArchivo = folderResult;
 
     // Abre o crea un archivo para la salida
     FILE* archivo = fopen(nombreArchivo, "w");
@@ -1103,9 +1153,39 @@ int main(int argc, char** argv) {
 
     char result[10000] = "";
     long lTimestamp = 0;
-    const char* folderQuestions = "questions";  
+    char subcadena[255]; 
 
-    char* fileName = getFirstFile(folderQuestions);
+    //const char* folderQuestions = "questions";
+    //printf("\ngetFirstFile Location: %s\n", location);
+    const char* ultimaBarra = strrchr(location, '/');
+
+    if (ultimaBarra != NULL) {
+        // Calcula la longitud de la subcadena hasta la última barra
+        int longitud = ultimaBarra - location;
+
+        // Crea un buffer para almacenar la subcadena
+
+        // Copia la subcadena a partir del inicio de la ruta
+        strncpy(subcadena, location, longitud);
+        subcadena[longitud] = '\0';  // Agrega el carácter nulo al final
+
+        // Imprime la subcadena resultante
+       // printf("Subcadena hasta la última barra: %s\n", subcadena);
+        location[0] = '\0';
+        sprintf(location + strlen(location), "%s", subcadena);
+        strcat(subcadena, "/questions");
+
+    }
+    else {
+        // No se encontró ninguna barra en la cadena
+       // printf("No se encontró ninguna barra en la cadena.\n");
+        //folderQuestions = "questions";
+        strcat(subcadena, "");
+        strcat(subcadena, "questions");
+        location[0] = '\0';
+    }
+
+    char* fileName = getFirstFile(subcadena);
     bool fileProcessing = false;
     while (remaining_tokens > 0) {
 
@@ -1208,7 +1288,7 @@ int main(int argc, char** argv) {
 
                 if (strlen(result) > 0)
                 {
-                    fileResponse(lTimestamp,fileName,result);
+                    fileResponse(lTimestamp, location,fileName,result);
                     result[0] = '\0';
                     fileProcessing = false;
                 }
@@ -1217,7 +1297,7 @@ int main(int argc, char** argv) {
                 while (another_line) {
                     if (fileProcessing == false)
                     {
-                        char* file = getFirstFile(folderQuestions);
+                        char* file = getFirstFile(subcadena);
                         if (file != NULL)
                         {
                             fileName = file;
@@ -1228,7 +1308,7 @@ int main(int argc, char** argv) {
                     time_t timestamp = time(NULL);
                     lTimestamp = timestamp;
                     printf(ANSI_COLOR_YELLOW);
-                    char* buf = readFile(lTimestamp, fileName);
+                    char* buf = readFile(lTimestamp, location,fileName);
                     int n_read = strlen(buf);
                     if (params.use_color) printf(ANSI_BOLD ANSI_COLOR_GREEN);
 
